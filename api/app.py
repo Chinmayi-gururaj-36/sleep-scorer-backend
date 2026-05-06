@@ -6,7 +6,12 @@ import numpy as np
 app = Flask(__name__)
 CORS(app)
 
-model_data = joblib.load("model.pkl")
+import os
+
+BASE_DIR = os.path.dirname(__file__)
+model_path = os.path.join(BASE_DIR, "..", "model.pkl")
+
+model_data = joblib.load(model_path)
 model = model_data["model"]
 feature_columns = model_data["feature_columns"]
 
