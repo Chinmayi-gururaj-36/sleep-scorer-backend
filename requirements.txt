@@ -3,4 +3,8 @@ flask-cors
 joblib
 scikit-learn
 numpy
+<<<<<<< HEAD
 pandas
+=======
+pandas
+>>>>>>> 07e4c9b804aa6f1812e0f3a726e6e461c9245990
