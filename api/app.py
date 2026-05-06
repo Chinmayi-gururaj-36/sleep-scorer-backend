@@ -11,9 +11,14 @@ import os
 BASE_DIR = os.path.dirname(__file__)
 model_path = os.path.join(BASE_DIR, "..", "model.pkl")
 
-model_data = joblib.load(model_path)
-model = model_data["model"]
-feature_columns = model_data["feature_columns"]
+try:
+    model_data = joblib.load(model_path)
+    model = model_data["model"]
+    feature_columns = model_data["feature_columns"]
+except Exception as e:
+    print("MODEL LOAD ERROR:", str(e))
+    model = None
+    feature_columns = None
 
 TIPS = {
     "Sleep_Duration":         "Aim for 7–9 hours tonight. Even 30 mins more makes a real difference.",
