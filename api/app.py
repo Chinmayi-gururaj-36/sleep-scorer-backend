@@ -45,6 +45,10 @@ def get_label(score):
 
 @app.route("/predict", methods=["POST"])
 def predict():
+    if model is None:
+        return jsonify({
+            "error": "Model not loaded properly"
+        }), 500
     data = request.get_json()
     sleep    = float(data.get("sleep_hours", 7))
     screen   = float(data.get("screen_time_mins", 60))
