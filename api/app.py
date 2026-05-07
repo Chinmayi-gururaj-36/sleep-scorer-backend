@@ -17,7 +17,8 @@ try:
     feature_columns = model_data["feature_columns"]
 except Exception as e:
     print("MODEL LOAD ERROR:", str(e))
-    raise e
+    model = None
+    feature_columns = None
 
 TIPS = {
     "Sleep_Duration":         "Aim for 7–9 hours tonight. Even 30 mins more makes a real difference.",
