@@ -7,6 +7,10 @@ app = Flask(__name__)
 CORS(app)
 
 import os
+import anthropic
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = os.path.dirname(__file__)
 model_path = os.path.join(BASE_DIR, "..", "model.pkl")
@@ -70,6 +74,29 @@ def predict():
         "tip":          TIPS[worst],
         "factors":      factors
     })
+
+@app.route("/advice", methods=["POST"])
+def advice():
+    data = request.get_json() or {}
+    sleep_score = data.get("sleep_score")
+    worst_factor = data.get("worst_factor")
+    question = data.get("question", "")
+
+    try:
+        client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+        prompt = f"User's sleep score: {sleep_score}\nUser's worst factor: {worst_factor}\nUser's question: {question}"
+        
+        response = client.messages.create(
+            model="claude-sonnet-4-20250514",
+            max_tokens=256,
+            system="You are a friendly sleep coach. Give short, practical advice.",
+            messages=[
+                {"role": "user", "content": prompt}
+            ]
+        )
+        return jsonify({"advice": response.content[0].text})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/", methods=["GET"])
 def home():
