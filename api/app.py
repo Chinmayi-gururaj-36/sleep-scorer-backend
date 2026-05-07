@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 
 import os
-import anthropic
+import google.generativeai as genai
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -83,18 +83,13 @@ def advice():
     question = data.get("question", "")
 
     try:
-        client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
-        prompt = f"User's sleep score: {sleep_score}\nUser's worst factor: {worst_factor}\nUser's question: {question}"
+        genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+        model = genai.GenerativeModel('gemini-2.5-flash', system_instruction="You are a friendly sleep coach. Give short, practical advice.")
         
-        response = client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=256,
-            system="You are a friendly sleep coach. Give short, practical advice.",
-            messages=[
-                {"role": "user", "content": prompt}
-            ]
-        )
-        return jsonify({"advice": response.content[0].text})
+        prompt = f"User's sleep score: {sleep_score}\nUser's worst factor: {worst_factor}\nUser's question: {question}"
+        response = model.generate_content(prompt)
+        
+        return jsonify({"advice": response.text})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
