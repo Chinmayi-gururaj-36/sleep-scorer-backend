@@ -17,6 +17,7 @@ The system uses a Machine Learning model trained using Random Forest Regression 
 - Analyzes lifestyle factors affecting sleep
 - Interactive and responsive UI
 - Real-time backend API integration
+- Stores user sleep history using Supabase
 - Fully deployed online
 
 ---
@@ -59,6 +60,9 @@ The system uses a Machine Learning model trained using Random Forest Regression 
 - NumPy
 - Joblib
 
+### Database
+- Supabase
+
 ### Deployment
 - Vercel (Backend)
 - Lovable (Frontend)
@@ -77,6 +81,7 @@ sleep-scorer-backend/
 ├── requirements.txt
 ├── vercel.json
 └── README.md
+├── Supabase integration for sleep history storage
 ```
 
 ---
